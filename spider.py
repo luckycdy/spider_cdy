@@ -20,12 +20,12 @@ class Spider():
 
     async def get_data(self,url,method="get",data=None,sem_num=0):
         if sem_num:
-            async with asyncio.Semaphore(sem_num):  # 限制并发数为5个
+            async with asyncio.Semaphore(sem_num):  # 限制并发数
                 async with aiohttp.ClientSession(headers=self.header) as session:
                     async with session.get(url) as resp:
                         # errors='ignore'，不加这个参数的话，会报错，具体错误内容见下面图片
                         # response = await resp.text(encoding='utf-8',errors='ignore')
-                        data = await resp.read()
+                        data = await resp.read()    # read 返回字节流
                         # print(data)
                         return data
         else:
@@ -39,6 +39,7 @@ class Spider():
                     return data
 
     def callback(self,mydb,set_name,task):
+        # mydb 为对象实例，最后一个参数必为 task 
         mydb.save_set(set_name,task.result())
         # if method=="get":
         #     return requests.get(url,headers=self.header)
@@ -47,7 +48,7 @@ class Spider():
 
     async def parse_news(self,url):
         data = await self.get_data(url)
-        json_news = json.loads(data)
+        json_news = json.loads(data)    # 字节流转为 json
         # 如果找到数据，则返回。否则返回 False
         if not json_news["Data"]["Found"]:
             return False

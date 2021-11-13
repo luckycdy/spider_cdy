@@ -1,4 +1,4 @@
-import pymongo
+# import pymongo
 from motor.motor_asyncio import AsyncIOMotorClient
 
 class MyDB():
@@ -9,6 +9,7 @@ class MyDB():
     async def save_set(self,setName,data):
         # 如果 data 为 json则直接保存，否则构造字典再保存
         if isinstance(data,dict):
-            await self.db[setName].insert_one(data)
+            await self.db[setName].insert_one(data)     
+            # motor 中单个保存为 insert_one，多个为 insert_many。与 pymongo 不同
         else:
             await self.db[setName].insert_one({"data":data})
