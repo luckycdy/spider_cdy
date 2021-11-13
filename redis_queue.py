@@ -26,6 +26,6 @@ class MyRedis():
             data = await myspider.parse_news(url)
             # 如果有数据则保存
             if data:
-                mydb.save_set(set_name,data)
+                await mydb.save_set(set_name,data)
             self.r.sadd('history', url)      # 将该 URL 加入已爬取的集合中
             

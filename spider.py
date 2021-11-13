@@ -18,8 +18,18 @@ class Spider():
         for i in range(lnum,rnum):
             yield url(i)
 
-    async def get_data(self,url,method="get",data=None,sem_num=32):
-        async with asyncio.Semaphore(sem_num):  # 限制并发数为5个
+    async def get_data(self,url,method="get",data=None,sem_num=0):
+        if sem_num:
+            async with asyncio.Semaphore(sem_num):  # 限制并发数为5个
+                async with aiohttp.ClientSession(headers=self.header) as session:
+                    async with session.get(url) as resp:
+                        # errors='ignore'，不加这个参数的话，会报错，具体错误内容见下面图片
+                        # response = await resp.text(encoding='utf-8',errors='ignore')
+                        data = await resp.read()
+                        # print(data)
+                        return data
+        else:
+            # async with asyncio.Semaphore(sem_num):  # 限制并发数为5个
             async with aiohttp.ClientSession(headers=self.header) as session:
                 async with session.get(url) as resp:
                     # errors='ignore'，不加这个参数的话，会报错，具体错误内容见下面图片
@@ -52,7 +62,7 @@ class Spider():
         tasks = []
         myredis.creatQueue('url_list',self.gen_url_news(lnum,rnum))
 
-        for _ in range(32):
+        for _ in range(rnum-lnum):
             task = asyncio.ensure_future(self.strat_queue(myredis,mydb,set_name))
             # task.add_done_callback(functools.partial(self.callback, mydb,set_name))
             tasks.append(task)
