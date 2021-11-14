@@ -7,8 +7,11 @@ class MyRedis():
         self.r = redis.StrictRedis(host = host, port = port,db = 2,decode_responses=True)
 
     def creatQueue(self,QName,serials):
-        for serial in serials:
-            self.r.lpush(QName,serial)
+        # 分布式只初始化一次即可
+        is_exsit = self.r.get(QName)
+        if not is_exsit:
+            for serial in serials:
+                self.r.lpush(QName,serial)
 
     # def setQueue(self,QName,data):
     #     if self.r.sismember(QName,data):
@@ -27,5 +30,6 @@ class MyRedis():
             # 如果有数据则保存
             if data:
                 await mydb.save_set(set_name,data)
+            print('成功')
             self.r.sadd('history', url)      # 将该 URL 加入已爬取的集合中
             

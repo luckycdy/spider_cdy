@@ -2,6 +2,7 @@
 import aiohttp
 import asyncio
 import json
+import time
 # import functools
 
 
@@ -19,6 +20,7 @@ class Spider():
             yield url(i)
 
     async def get_data(self,url,method="get",data=None,sem_num=0):
+        time.sleep(5)
         if sem_num:
             async with asyncio.Semaphore(sem_num):  # 限制并发数
                 async with aiohttp.ClientSession(headers=self.header) as session:
