@@ -20,7 +20,7 @@ class Spider():
             yield url(i)
 
     async def get_data(self,url,method="get",data=None,sem_num=0):
-        time.sleep(5)
+        # time.sleep(5)
         if sem_num:
             async with asyncio.Semaphore(sem_num):  # 限制并发数
                 async with aiohttp.ClientSession(headers=self.header) as session:
@@ -66,6 +66,7 @@ class Spider():
         myredis.creatQueue('url_list',self.gen_url_news(lnum,rnum))
 
         for _ in range(rnum-lnum):
+        # for _ in range(15):
             task = asyncio.ensure_future(self.strat_queue(myredis,mydb,set_name))
             # task.add_done_callback(functools.partial(self.callback, mydb,set_name))
             tasks.append(task)

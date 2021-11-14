@@ -19,9 +19,10 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    myspider.main_news(mydb=mydb,myredis=myredis,lnum=375256,rnum=375266)
+    myspider.main_news(mydb=mydb,myredis=myredis,lnum=378277,rnum=381277)
 
     
     end_time = time.time()
     use_time = end_time-start_time
     print(use_time)
+    print(f'该机器爬取任务数量: {myredis.spi_num}')

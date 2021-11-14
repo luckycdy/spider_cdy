@@ -5,6 +5,7 @@ import asyncio
 class MyRedis():
     def __init__(self,host,port) -> None:
         self.r = redis.StrictRedis(host = host, port = port,db = 2,decode_responses=True)
+        self.spi_num = 0
 
     def creatQueue(self,QName,serials):
         # 分布式只初始化一次即可
@@ -34,6 +35,7 @@ class MyRedis():
             # 如果有数据则保存
             if data:
                 await mydb.save_set(set_name,data)
-            print('成功')
+            # print('成功')
+            self.spi_num += 1
             self.r.sadd('history', url)      # 将该 URL 加入已爬取的集合中
             
