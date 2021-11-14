@@ -2,8 +2,9 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
 class MyDB():
-    def __init__(self,host,port, dbName):
-        self.conn = AsyncIOMotorClient(host = host, port = port)
+    def __init__(self,host,port, dbName,user,pswd):
+        # self.conn = AsyncIOMotorClient(host = host, port = port)
+        self.conn = AsyncIOMotorClient(f'mongodb://{user}:{pswd}@{host}:{port}/')
         self.db = self.conn[dbName]
 
     async def save_set(self,setName,data):

@@ -12,14 +12,14 @@ if __name__ == "__main__":
     myredis = MyRedis(host = conf["host"], port = conf["Redis"]["port"])
     # if r.ping():
     #     print("redis 已连接")
-    mydb = MyDB(host = conf["host"], port = conf["DBMS"]["port"],dbName = conf["DBMS"]["database"])
+    mydb = MyDB(host = conf["host"], port = conf["DBMS"]["port"],dbName = conf["DBMS"]["database"],user=conf["DBMS"]["user"],pswd=conf["DBMS"]["password"])
     # if mydb.conn.server_info():
     #     print("mongo 已连接")
     myspider = Spider()
 
     start_time = time.time()
 
-    myspider.main_news(mydb=mydb,myredis=myredis,lnum=374203,rnum=375203)
+    myspider.main_news(mydb=mydb,myredis=myredis,lnum=375204,rnum=375205)
 
     
     end_time = time.time()
