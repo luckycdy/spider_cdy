@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    myspider.main_news(mydb=mydb,myredis=myredis,lnum=375205,rnum=375215)
+    myspider.main_news(mydb=mydb,myredis=myredis,lnum=375256,rnum=375266)
 
     
     end_time = time.time()

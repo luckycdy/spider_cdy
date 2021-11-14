@@ -8,10 +8,14 @@ class MyRedis():
 
     def creatQueue(self,QName,serials):
         # 分布式只初始化一次即可
-        is_exsit = self.r.get(QName)
+        is_exsit = self.r.scard('set_gen')
         if not is_exsit:
+            self.r.sadd('set_gen',1)
             for serial in serials:
                 self.r.lpush(QName,serial)
+
+    def clearQueue(self,):
+        self.r.delete('set_gen')
 
     # def setQueue(self,QName,data):
     #     if self.r.sismember(QName,data):

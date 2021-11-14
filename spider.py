@@ -72,3 +72,5 @@ class Spider():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(asyncio.wait(tasks))
         loop.close()
+
+        myredis.clearQueue()
